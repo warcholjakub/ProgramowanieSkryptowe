@@ -1,9 +1,8 @@
 import re
 import sys
-from cut import cut
 
 def argument_interpreter(args):
-    i = 1
+    i = 2
     ans = ["\t"]
     while i < len(args):
         if args[i] == "-d":
@@ -50,4 +49,8 @@ ans = ["\t"]
 try: ans = argument_interpreter(sys.argv)
 except: print("Błąd")
 
-cut(ans)
+if sys.argv[1] == "cut": from cut import cut; cut(ans)
+elif sys.argv[1] == "grep": pass
+else: raise ValueError()
+
+
