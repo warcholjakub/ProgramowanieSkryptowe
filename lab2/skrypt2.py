@@ -46,6 +46,35 @@ def cut_interpreter(args):
     return ans
 
 
+def cut_argparser(delim, ranges):
+    from cut import cut
+    ans = [delim]
+    coma_list = ranges.split(",")
+    for temp in coma_list:
+        dash = temp.find("-")
+        if dash != -1:
+            temp_list = [-1, -1]
+            var1 = temp[0:dash]
+            var2 = temp[dash+1:]
+            if len(var1) != 0 and len(var2) != 0:
+                    temp_list[0] = int(var1)
+                    temp_list[1] = int(var2)
+            elif len(var1) == 0 and len(var2) != 0:
+                    temp_list[0] = 0
+                    temp_list[1] = int(var2)
+            elif len(var1) != 0 and len(var2) == 0:
+                    temp_list[0] = int(var1)
+                    temp_list[1] = sys.maxsize
+            else: raise ValueError()
+            if temp_list[0] > temp_list[1]: raise ValueError
+
+            ans.append(temp_list)
+        else:
+            ans.append(int(temp))
+    cut(ans)
+
+
+
 def grep_interpreter(args):
     i = 2
     ans = [0,0,""]
@@ -57,6 +86,11 @@ def grep_interpreter(args):
         else: raise ValueError()
         i += 1
     return ans
+
+
+def grep_argparse(w_flag, i_flag, re_pattern):
+    from grep import grep
+    grep(i_flag, w_flag, re_pattern)
 
 
 def command_interpreter(args):
@@ -71,7 +105,6 @@ def command_interpreter(args):
         ans = [0, 0, ""]
         try: ans = grep_interpreter(args)
         except: print("Błąd"); quit()
-        print(ans)
         grep(ans[0], ans[1], ans[2])
     else: raise ValueError()
 
