@@ -1,7 +1,7 @@
 import re
 import sys
 
-def argument_interpreter(args):
+def cut_interpreter(args):
     i = 2
     ans = ["\t"]
     while i < len(args):
@@ -45,12 +45,37 @@ def argument_interpreter(args):
         i += 1
     return ans
 
-ans = ["\t"]
-try: ans = argument_interpreter(sys.argv)
-except: print("Błąd")
 
-if sys.argv[1] == "cut": from cut import cut; cut(ans)
-elif sys.argv[1] == "grep": pass
-else: raise ValueError()
+def grep_interpreter(args):
+    i = 2
+    ans = [0,0,""]
+    pattern_NF = 1
+    while i < len(args):
+        if args[i] == "-i": ans[1] = 1
+        elif args[i] == "-w": ans[0] = 1
+        elif pattern_NF: ans[2] = args[i]; pattern_NF = 0
+        else: raise ValueError()
+        i += 1
+    return ans
+
+
+def command_interpreter(args):
+    if args[1] == "cut":
+        from cut import cut
+        ans = ["\t"]
+        try: ans = cut_interpreter(args)
+        except: print("Błąd"); quit()
+        cut(ans)
+    elif args[1] == "grep":
+        from grep import grep
+        ans = [0, 0, ""]
+        try: ans = grep_interpreter(args)
+        except: print("Błąd"); quit()
+        print(ans)
+        grep(ans[0], ans[1], ans[2])
+    else: raise ValueError()
+
+if __name__ == "__main__":
+    command_interpreter(sys.argv)
 
 

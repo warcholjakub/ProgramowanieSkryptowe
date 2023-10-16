@@ -1,5 +1,3 @@
-import sys
-
 MAX_STRING=50
 
 def cut(args):
