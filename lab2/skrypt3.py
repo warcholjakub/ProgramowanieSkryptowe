@@ -22,7 +22,7 @@ parser_3.add_argument('STRING', type=str, nargs=1, action='store')
 
 args = parser.parse_args()
 
-print(args)
+#print(args)
 temp = len(vars(args))
 
 match temp:
