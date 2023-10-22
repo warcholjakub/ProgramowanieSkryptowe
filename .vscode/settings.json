@@ -1,6 +1,6 @@
 {
     "python.testing.pytestArgs": [
-        "lab3"
+        "lab2_zaj"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
