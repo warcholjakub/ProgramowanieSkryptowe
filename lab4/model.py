@@ -16,7 +16,7 @@ class Vector2d:
         self.y_cord = y
 
     def __str__(self):
-        return f"({self.x_cord}, {self.y_cord})"
+        return f"({self.x_cord},{self.y_cord})"
     
     def __eq__(self, other_Vector2d):
         if not isinstance(other_Vector2d, Vector2d): return NotImplemented
