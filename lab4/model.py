@@ -4,10 +4,10 @@ from enum import Enum
 MAP_SIZE = 5
 
 class MoveDirection(Enum):
-    FORWARD = 'Zwierzak idzie do przodu'
-    BACKWARD = 'Zwierzak idzie do tylu'
-    LEFT = 'Zwierzak skreca w lewo'
-    RIGHT = 'Zwierzak skreca w prawo'
+    FORWARD = 'f'
+    BACKWARD = 'b'
+    LEFT = 'l'
+    RIGHT = 'r'
 
 class Vector2d:
     __x, __y = 0, 0
@@ -22,8 +22,8 @@ class Vector2d:
         if not isinstance(other_Vector2d, Vector2d): return NotImplemented
         return self.x_cord == other_Vector2d.x_cord and self.y_cord == other_Vector2d.y_cord
     
-    # def __hash__(self):
-    #     return hash((self.x_cord, self.y_cord))
+    def __hash__(self):
+        return hash((self.x_cord, self.y_cord))
 
 
     # __x property
@@ -156,7 +156,3 @@ class Animal:
             case MoveDirection.BACKWARD: 
                 temp = self.position.subtract(self.orientation.toUnitVector())
                 if temp.precedes(Vector2d(MAP_SIZE-1, MAP_SIZE-1)) and temp.follows(Vector2d(0,0)): self.position = temp
-
-print(MapDirection.EAST)
-print(MapDirection.EAST.next())
-print(MapDirection.EAST.previous()) 
