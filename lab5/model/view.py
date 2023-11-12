@@ -39,16 +39,16 @@ class MapVisualizer:
             String representation of the selected region of the map.
         """
         builder: str = "\033c" # Clear screen
-        for i in range(upperRight.y + 1, lowerLeft.y - 1, -1):
-            if i == upperRight.y + 1:
+        for i in range(upperRight.y_cord + 1, lowerLeft.y_cord - 1, -1):
+            if i == upperRight.y_cord + 1:
                 builder += self._drawHeader(lowerLeft, upperRight)
             builder += f"{i:4d}"
-            for j in range(lowerLeft.x, upperRight.x + 2):
-                if i < lowerLeft.y or i > upperRight.y:
-                    builder += self._drawFrame(j <= upperRight.x)
+            for j in range(lowerLeft.x_cord, upperRight.x_cord + 2):
+                if i < lowerLeft.y_cord or i > upperRight.y_cord:
+                    builder += self._drawFrame(j <= upperRight.x_cord)
                 else:
                     builder += self.__class__.CELL_SEGMENT
-                    if j <= upperRight.x:
+                    if j <= upperRight.x_cord:
                         builder += self._drawObject(Vector2d(j, i))
             builder += "\n"
         return builder
@@ -56,7 +56,7 @@ class MapVisualizer:
     def _drawHeader(self, lowerLeft: Vector2d, upperRight: Vector2d) -> str:
         builder: str = ""
         builder += " y\\x"
-        for j in range(lowerLeft.x, upperRight.x + 1):
+        for j in range(lowerLeft.x_cord, upperRight.x_cord + 1):
             builder += f"{j:2d}"
 
         builder += "\n"
