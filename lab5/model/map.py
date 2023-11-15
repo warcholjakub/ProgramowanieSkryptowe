@@ -65,6 +65,6 @@ class InfiniteMap(WorldMap):
         return map.draw(LL, UR)
     
     def canMoveTo(self, position: Vector2d) -> bool:
-        if not self.isOccupied(position): return True
+        if not super().isOccupied(position): return True
         else: return False
     
