@@ -1,8 +1,8 @@
-from model.core import MoveDirection, Vector2d, MapDirection
+from model.core import MoveDirection, Vector2d, MapDirection, log, log_to
 
 class Animal:
     def __init__(self, position: Vector2d, orientation: MapDirection = MapDirection.NORTH):
-        self.position = position
+        self.position: Vector2d = position
         self.orientation = orientation
     
     def __str__(self):
@@ -15,6 +15,9 @@ class Animal:
         return position == self.position
 
     def move(self, direction: MoveDirection, validator) -> None:
+        # self.position = (self.position.add(self.orientation.toUnitVector()) if validator.canMoveTo(self.position.add(self.orientation.toUnitVector())) and direction == MoveDirection.FORWARD else ()) if direction in [MoveDirection.FORWARD, MoveDirection.BACKWARD] else self.position
+        # self.orientation = (self.orientation.next() if direction == MoveDirection.RIGHT else self.orientation.previous()) if direction in [MoveDirection.RIGHT, MoveDirection.LEFT] else self.orientation
+        
         match direction:
             case MoveDirection.RIGHT: self.orientation = self.orientation.next()
             case MoveDirection.LEFT: self.orientation = self.orientation.previous()

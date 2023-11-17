@@ -9,6 +9,15 @@ def log(func):
         return func(*args, **kwargs)
     return wrapper
 
+def log_to(file):
+    def inner(func):
+        def wrapper(*args, **kwargs):
+            with open (f'{file}.txt', 'a') as out_file:
+                out_file.write(f'{func.__qualname__} | {args}\n')
+            return func(*args, **kwargs)
+        return wrapper
+    return inner
+
 class MoveDirection(Enum):
     FORWARD = 'f'
     BACKWARD = 'b'
@@ -37,7 +46,7 @@ class Vector2d:
 
     # __x property
     @property
-    def x_cord(self):
+    def x_cord(self) -> int:
         return self.__x
     
     @x_cord.setter
@@ -72,7 +81,7 @@ class Vector2d:
         if self.x_cord >= other_Vector2d.x_cord and self.y_cord >= other_Vector2d.y_cord: return True
         else: return False
 
-    @log
+    @log_to('dziennik')
     def add(self, other_Vector2d):
         if not isinstance(other_Vector2d, Vector2d): raise ValueError
         return Vector2d(

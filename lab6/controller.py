@@ -5,15 +5,16 @@ from model.map import RectangularMap
 from time import sleep
 import os
 
-class OptionsParser:
+def isLegal(arg) -> bool:
+    if arg in MoveDirection._value2member_map_: return True
+    else: raise ValueError(f'"{arg}" is not legal move specification.')
 
+class OptionsParser:
     @staticmethod
     def parse(args: list):
-        trans = []
-        for elem in args:
-            if elem not in MoveDirection._value2member_map_: raise ValueError(f'"{elem}" is not legal move specification.')
-            trans.append(MoveDirection(elem))
-        return trans
+        obiekt1 = filter(lambda x: (isLegal(x)), args)
+        obiekt2 = [MoveDirection(x) for x in obiekt1]
+        return obiekt2
     
 class Simulation():
     directions = []
