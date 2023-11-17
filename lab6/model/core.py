@@ -3,7 +3,11 @@ from enum import Enum
 
 MAP_SIZE = 5
 
-
+def log(func):
+    def wrapper(*args, **kwargs):
+        print(f'Nazwa kwalifikowana: {func.__qualname__}\nArgumenty: {args}')
+        return func(*args, **kwargs)
+    return wrapper
 
 class MoveDirection(Enum):
     FORWARD = 'f'
@@ -18,6 +22,9 @@ class Vector2d:
         self.y_cord = y
 
     def __str__(self):
+        return f"({self.x_cord},{self.y_cord})"
+    
+    def __repr__(self):
         return f"({self.x_cord},{self.y_cord})"
     
     def __eq__(self, other_Vector2d):
@@ -53,7 +60,7 @@ class Vector2d:
     @y_cord.getter
     def y_cord(self):
         return self.__y
-    
+
     
     def precedes(self, other_Vector2d):
         if not isinstance(other_Vector2d, Vector2d): raise ValueError
@@ -65,6 +72,7 @@ class Vector2d:
         if self.x_cord >= other_Vector2d.x_cord and self.y_cord >= other_Vector2d.y_cord: return True
         else: return False
 
+    @log
     def add(self, other_Vector2d):
         if not isinstance(other_Vector2d, Vector2d): raise ValueError
         return Vector2d(
