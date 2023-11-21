@@ -45,6 +45,7 @@ class Vector2d:
 
 
     # __x property
+    
     @property
     def x_cord(self) -> int:
         return self.__x
@@ -81,7 +82,8 @@ class Vector2d:
         if self.x_cord >= other_Vector2d.x_cord and self.y_cord >= other_Vector2d.y_cord: return True
         else: return False
 
-    @log_to('dziennik')
+    #@log_to('dziennik')
+    @log
     def add(self, other_Vector2d):
         if not isinstance(other_Vector2d, Vector2d): raise ValueError
         return Vector2d(
