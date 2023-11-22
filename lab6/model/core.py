@@ -82,7 +82,6 @@ class Vector2d:
         if self.x_cord >= other_Vector2d.x_cord and self.y_cord >= other_Vector2d.y_cord: return True
         else: return False
 
-    #@log_to('dziennik')
     @log
     def add(self, other_Vector2d):
         if not isinstance(other_Vector2d, Vector2d): raise ValueError
@@ -112,6 +111,7 @@ class Vector2d:
                 self.y_cord if self.y_cord <= other_Vector2d.y_cord else other_Vector2d.y_cord
             )
     
+    @log_to('dziennik')
     def opposite(self):
         return Vector2d(
                 self.x_cord * -1,
