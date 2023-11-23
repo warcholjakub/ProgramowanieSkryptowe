@@ -79,11 +79,17 @@ class Store:
         found = False
         client = Klient("N/A", "N/A")
         full_name = name + "_" + surname
-        for var in self.clients.keys():
-            if var.name == name and var.surname == surname:
-                client = var
-                found = True; break
-        if not found: client = Klient(name, surname); self.clients[client] = []
+        
+        found = full_name in [(var.name + "_" + var.surname) for var in self.clients.keys()]
+        # for var in self.clients.keys():
+        #     if var.name == name and var.surname == surname:
+        #         client = var
+        #         found = True; break
+        
+        client = (not found and Klient(name, surname)) or client; self.clients[client] = []
+        # if not found: client = Klient(name, surname); self.clients[client] = []
+        
+        
         for x in Store.products:
             if x.nazwa == produkt_nazwa:
                 if x.ilosc >= ilosc:
