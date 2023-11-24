@@ -10,5 +10,6 @@
         "./lab2",
         "-p",
         "*test*.py"
-    ]
+    ],
+    "python.analysis.autoImportCompletions": false
 }
