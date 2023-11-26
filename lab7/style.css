@@ -67,7 +67,7 @@
 
     aside {
         position: relative;
-        top: -115px;
+        top: -6vw;
         float: right;
         margin: 20px;
         padding-left: 25px;
@@ -95,7 +95,7 @@
     }
 }
 
-@media only screen and (max-device-width: 480px) {
+@media only screen and (max-device-width: 480px){
     header {
         font-size: 6vw;
         margin: 20px;
