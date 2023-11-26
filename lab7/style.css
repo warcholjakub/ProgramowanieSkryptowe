@@ -4,8 +4,13 @@
 }
 
 @keyframes change_color {
-    from {color: red;}
-    to {color: yellowgreen;}
+    from {
+        color: red;
+    }
+
+    to {
+        color: yellowgreen;
+    }
 }
 
 .azure {
@@ -17,6 +22,12 @@
     box-shadow: 0px 0px 5px 0px rgba(66, 68, 90, 1);
 }
 
+.box_sizing {
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+}
+
 .animate {
     animation-name: change_color;
     animation-duration: 2s;
@@ -24,39 +35,119 @@
     animation-iteration-count: infinite;
 }
 
+@media only screen and (min-device-width: 481px) {
+    header {
+        font-size: 1vw;
+        width: auto;
+        padding-left: 10px;
+        margin: 20px;
+    }
 
-header {
-    padding-left: 10px;
-    margin: 20px;
+    nav {
+        font-size: 0.8vw;
+        width: 170px;
+        margin: 20px;
+        padding-left: 25px;
+    }
+
+    main {
+        margin: 20px;
+        width: 33%;
+        padding-bottom: 30px;
+    }
+
+    main blockquote {
+        font-size: 0.8vw;
+    }
+
+    main h1 {
+        font-size: 1.9vw;
+        padding-left: 20px;
+    }
+
+    aside {
+        position: relative;
+        top: -115px;
+        float: right;
+        margin: 20px;
+        padding-left: 25px;
+        width: 50%;
+        padding-bottom: 20px;
+    }
+
+    aside h1 {
+        font-size: 1.5vw;
+    }
+
+    aside h2 {
+        font-size: 1.2vw;
+    }
+
+    aside ul {
+        font-size: 0.9vw;
+    }
+
+    footer {
+        font-size: 0.8vw;
+        width: auto;
+        margin: 20px;
+        padding: 10px;
+    }
 }
 
-nav {
-    width: 140px;
-    margin: 20px;
-    padding-left: 25px;
-}
+@media only screen and (max-device-width: 480px) {
+    header {
+        font-size: 6vw;
+        margin: 20px;
+        padding-left: 10px;
+        width: 100%;
+    }
 
-main {
-    margin-left: 20px;
-    width: 33%;
-    padding-right: 0px;
-    padding-bottom: 30px;
-}
+    nav {
+        font-size: 6vw;
+        margin: 20px;
+        padding-left: 25px;
+        width: 100%;
+    }
 
-main h1 {
-    padding-left: 20px;
-}
+    main {
+        width: 100%;
+        margin: 20px;
+        padding-bottom: 30px;
+    }
 
-aside {
-    position: fixed;
-    left: 50%;
-    top: 130px;
-    padding-left: 25px;
-    width: 888px;
-    padding-bottom: 20px;
-}
+    main blockquote {
+        font-size: 2.6vw;
+    }
 
-footer {
-    margin: 20px;
-    padding: 10px;
+    main h1 {
+        font-size: 10vw;
+        padding-left: 20px;
+    }
+
+    aside {
+        margin: 20px;
+        padding-left: 25px;
+        padding-bottom: 20px;
+        width: 100%;
+    }
+
+    aside h1 {
+        font-size: 10vw;
+    }
+
+    aside h2 {
+        font-size: 6vw;
+    }
+
+    aside ul {
+        font-size: 5vw;
+    }
+
+    footer {
+        font-size: 5vw;
+        margin: 20px;
+        padding: 10px;
+        width: 100%;
+    }
 }
