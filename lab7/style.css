@@ -35,7 +35,7 @@
     animation-iteration-count: infinite;
 }
 
-@media only screen and (min-device-width: 481px) {
+@media only screen and (min-device-width: 481px) and (min-device-height: 481px){
     header {
         font-size: 1vw;
         width: auto;
@@ -95,7 +95,64 @@
     }
 }
 
-@media only screen and (max-device-width: 480px){
+@media only screen and (max-device-width: 480px) and (orientation: portrait){
+    header {
+        font-size: 6vw;
+        margin: 20px;
+        padding-left: 10px;
+        width: 100%;
+    }
+
+    nav {
+        font-size: 6vw;
+        margin: 20px;
+        padding-left: 25px;
+        width: 100%;
+    }
+
+    main {
+        width: 100%;
+        margin: 20px;
+        padding-bottom: 30px;
+    }
+
+    main blockquote {
+        font-size: 2.6vw;
+    }
+
+    main h1 {
+        font-size: 10vw;
+        padding-left: 20px;
+    }
+
+    aside {
+        margin: 20px;
+        padding-left: 25px;
+        padding-bottom: 20px;
+        width: 100%;
+    }
+
+    aside h1 {
+        font-size: 10vw;
+    }
+
+    aside h2 {
+        font-size: 6vw;
+    }
+
+    aside ul {
+        font-size: 5vw;
+    }
+
+    footer {
+        font-size: 5vw;
+        margin: 20px;
+        padding: 10px;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-device-height: 480px) and (orientation: landscape){
     header {
         font-size: 6vw;
         margin: 20px;
