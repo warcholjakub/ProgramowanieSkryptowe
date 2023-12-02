@@ -17,7 +17,29 @@
         "use strict"; // Nie wyłączaj trybu ścisłego    
         var canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
-        ctx.fillText("Hello World", 10, 50); //Wykreślenie podanego tekstu na płótnie
+        // ctx.fillText("Hello World", 10, 50); //Wykreślenie podanego tekstu na płótnie
+        ctx.fillStyle = '#393939';
+
+        // Narysuj korpus Cybertrucka
+        ctx.fillRect(100, 200, 300, 150);
+
+        // Narysuj dach
+        ctx.beginPath();
+        ctx.moveTo(100, 200);
+        ctx.lineTo(250, 100);
+        ctx.lineTo(400, 200);
+        ctx.closePath();
+        ctx.fill();
+
+        // Narysuj koła
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(150, 350, 25, 0, Math.PI * 2, false);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(350, 350, 25, 0, Math.PI * 2, false);
+        ctx.fill();
     </script>
 </body>
 
