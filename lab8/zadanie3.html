@@ -9,7 +9,7 @@
 <body>
     <main>
         <h1>Płótno</h1>
-        <canvas id="canvas" width="500" height="500" style="border:1px solid #000000;">
+        <canvas id="canvas" width="400" height="200" style="border:1px solid #000000;">
             Wygląda na to, że twoja przeglądarka nie obsługuje elementu "canvas"
         </canvas>
     </main>
@@ -17,29 +17,18 @@
         "use strict"; // Nie wyłączaj trybu ścisłego    
         var canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
-        // ctx.fillText("Hello World", 10, 50); //Wykreślenie podanego tekstu na płótnie
-        ctx.fillStyle = '#393939';
+        ctx.fillStyle = '#008080';
+        ctx.fillRect(50, 100, 300, 50);
 
-        // Narysuj korpus Cybertrucka
-        ctx.fillRect(100, 200, 300, 150);
+        ctx.fillStyle = '#000080';
+        ctx.fillRect(100, 50, 200, 50);
 
-        // Narysuj dach
         ctx.beginPath();
-        ctx.moveTo(100, 200);
-        ctx.lineTo(250, 100);
-        ctx.lineTo(400, 200);
-        ctx.closePath();
-        ctx.fill();
-
-        // Narysuj koła
+        ctx.arc(100, 150, 20, 0, 2 * Math.PI);
+        ctx.arc(300, 150, 20, 0, 2 * Math.PI);
         ctx.fillStyle = '#000000';
-        ctx.beginPath();
-        ctx.arc(150, 350, 25, 0, Math.PI * 2, false);
         ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(350, 350, 25, 0, Math.PI * 2, false);
-        ctx.fill();
+        ctx.stroke();
     </script>
 </body>
 
