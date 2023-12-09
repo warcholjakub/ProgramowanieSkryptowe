@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="sklep.js"></script>
+    <title>
+        Samochody i przyczepy
+    </title>
+
+    <script>
+        function spin(item) {
+            item.classList.add("w3-spin")
+            console.log('test')
+        }
+        function stop_spin(item) {
+            item.classList.remove("w3-spin")
+        }
+    </script>
+
+    <script>createDB();</script>
+</head>
+
+<body>
+    <div class="w3-bar w3-khaki">
+        <a class="w3-bar-item">
+            <canvas id="canvas" width="40" height="20"></canvas>
+        </a>
+        <a href="#"
+            class="w3-bar-item w3-button w3-amber w3-right w3-hide-small w3-border w3-round-large w3-margin-right">Szukaj</a>
+        <input type="text" class="w3-bar-item w3-input w3-right w3-hide-small w3-border w3-round-large"
+            placeholder="Szukaj...">
+        <div class="w3-dropdown-hover w3-right w3-hide-small w3-border w3-round-xlarge w3-margin-right">
+            <button class="w3-button">Pojazdy ▼</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <a href="#" class="w3-bar-item w3-button">Samochody</a>
+                <a href="#" class="w3-bar-item w3-button">Przyczepy</a>
+            </div>
+        </div>
+        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
+            onclick="myFunction()">&#9776;</a>
+    </div>
+
+    <div id="demo" class="w3-bar-block w3-red w3-hide w3-hide-large w3-hide-medium">
+        <div class="w3-dropdown-hover">
+            <button class="w3-button w3-yellow w3-border">Pojazdy ▼</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <a href="#" class="w3-bar-item w3-button">Samochody</a>
+                <a href="#" class="w3-bar-item w3-button">Przyczepy</a>
+            </div>
+        </div>
+        <input type="text" class="w3-bar-item w3-input w3-border" placeholder="Szukaj...">
+        <a href="#" class="w3-bar-item w3-button w3-amber w3-border">Szukaj</a>
+
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-col l1 m1 w3-container">&nbsp;</div>
+        <div class="w3-container w3-border w3-round-large w3-margin-right w3-section w3-sand w3-col l5 m5"
+            onmousedown='spin(this);' onmouseup="stop_spin(this)">
+            <div class="w3-container w3-center">
+                <img src="images/tipo.png" alt="Tipo" style="width:90%">
+            </div>
+            <div class="w3-container">
+                <h2>Fiat Tipo</h2>
+                <ul>
+                    <li>Silnik benzynowy 999cm<sup>3</sup></li>
+                    <li>Manualna skrzynia biegów</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="w3-container w3-border w3-round-large w3-section w3-sand w3-col l3 m3">
+            <div class="w3-container w3-center">
+                <img src="images/porsche911.png" alt="Porsche 911" style="width:90%" onmousedown='spin(this);'
+                    onmouseup="stop_spin(this)">
+            </div>
+            <div class="w3-container">
+                <h2>Porsche 911</h2>
+                <ul>
+                    <li>Szybkie</li>
+                    <li>Bardzo szybkie</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-col l1 m1 w3-container">&nbsp;</div>
+        <form class="w3-container w3-col l3 m3">
+            <label class="w3-text-teal"><b>Linia komend</b></label>
+            <input id="command" class="w3-input w3-border w3-light-grey" type="text">
+
+            <button class="w3-btn w3-blue-grey" onclick="parse(document.getElementById('command').value)">Wykonaj</button>
+        </form>
+        <div class="w3-col l1 m1 w3-container">&nbsp;</div>
+        <div class="w3-container w3-border w3-round-large w3-margin-right w3-section w3-sand w3-col l3 m3">
+            <div class="w3-container w3-center w3-padding-large">
+                <img src="images/przyczepa_plandeka.png" alt="Przyczepa z plandeką" style="width:80%">
+            </div>
+            <div class="w3-container w3-center">
+                <h3>Przyczepka z plandeką</h2>
+            </div>
+        </div>
+        <div class="w3-container w3-border w3-round-large w3-margin-right w3-section w3-sand w3-col l3 m3">
+            <div class="w3-container w3-center w3-padding-large">
+                <img src="images/przyczepa_jednoosiowa.png" alt="Przyczepa jednoosiowa Besttrailers" style="width:80%">
+            </div>
+            <div class="w3-container w3-center">
+                <h3>Przyczepa jednoosiowa Besttrailers</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-row w3-section footer">
+        <div class="w3-col l1 m1 s1 w3-container">&nbsp;</div>
+        <div class="w3-container w3-amber w3-col l10 m10 s10 w3-round-xlarge">
+            <h6>© Szablony CyberAGH - Jakub Warchoł</h6>
+        </div>
+    </div>
+
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("demo");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+
+        var canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        ctx.scale(0.11, 0.11);
+        ctx.fillStyle = '#008080';
+        ctx.fillRect(50, 100, 300, 50);
+
+        ctx.fillStyle = '#000080';
+        ctx.fillRect(100, 50, 200, 50);
+
+        ctx.beginPath();
+        ctx.arc(100, 150, 20, 0, 2 * Math.PI);
+        ctx.arc(300, 150, 20, 0, 2 * Math.PI);
+        ctx.fillStyle = '#000000';
+        ctx.fill();
+        ctx.stroke();
+    </script>
+</body>
+
+</html>
