@@ -1,0 +1,159 @@
+:root {
+    --text-color-initial: green;
+    --text-color-final: red;
+}
+
+@keyframes change_color {
+    from {
+        color: red;
+    }
+
+    to {
+        color: yellowgreen;
+    }
+}
+
+.azure {
+    background-color: #EFF;
+}
+
+.shadow_border {
+    border: 2px solid #A8A8A8;
+    box-shadow: 0px 0px 5px 0px rgba(66, 68, 90, 1);
+}
+
+.box_sizing {
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+}
+
+.animate {
+    animation-name: change_color;
+    animation-duration: 2s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+}
+
+header {
+    font-size: 6vw;
+    margin: 20px;
+    padding-left: 10px;
+    width: 100%;
+}
+
+nav {
+    font-size: 6vw;
+    margin: 20px;
+    padding-left: 25px;
+    width: 100%;
+}
+
+main {
+    width: 100%;
+    margin: 20px;
+    padding-bottom: 30px;
+}
+
+main blockquote {
+    font-size: 2.6vw;
+}
+
+main h1 {
+    font-size: 10vw;
+    padding-left: 20px;
+}
+
+aside {
+    margin: 20px;
+    padding-left: 25px;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+aside h1 {
+    font-size: 10vw;
+}
+
+aside h2 {
+    font-size: 6vw;
+}
+
+aside ul {
+    font-size: 5vw;
+}
+
+footer {
+    font-size: 5vw;
+    margin: 20px;
+    padding: 10px;
+    width: 100%;
+}
+
+@media only screen and (min-device-width: 481px) and (min-device-height: 481px) {
+    header {
+        font-size: 1vw;
+        width: auto;
+        padding-left: 10px;
+        margin: 1vw;
+    }
+
+    nav {
+        font-size: 0.8vw;
+        width: 9vw;
+        height: 4vw;
+        margin: 1vw;
+        margin-bottom: 0;
+        padding-left: 3.5vw;
+    }
+
+    nav ul {
+        padding: 0;
+    }
+
+    main {
+        margin: 1vw;
+        width: 33%;
+        padding-bottom: 30px;
+    }
+
+    main blockquote {
+        font-size: 0.8vw;
+    }
+
+    main h1 {
+        font-size: 1.9vw;
+        padding-left: 20px;
+    }
+
+    aside {
+        position: relative;
+        top: -5vw;
+        float: right;
+        margin: 1vw;
+        padding-left: 25px;
+        width: 50%;
+        padding-bottom: 20px;
+    }
+
+    aside h1 {
+        font-size: 1.5vw;
+    }
+
+    aside h2 {
+        font-size: 1.2vw;
+    }
+
+    aside ul {
+        font-size: 0.9vw;
+    }
+
+    footer {
+        font-size: 0.8vw;
+        width: auto;
+        margin: 1vw;
+        padding: 10px;
+    }
+}
