@@ -2,7 +2,10 @@
 // const { URL } = require('node:url');
 
 import http from "node:http";
+import { parse } from "node:querystring";
 import { URL } from "node:url";
+import queryString from "query-string";
+
 
 /**
  * Handles incoming requests.
@@ -80,6 +83,24 @@ function requestListener(request, response) {
     response.write(`Hello ${url.searchParams.get("name")}`); // "url.searchParams.get('name')" contains the contents of the field (form) named 'name'
     /* ************************************************** */
     response.end(); // The end of the response — send it to the browser
+  } else if (url.pathname === "/" && request.method === "POST") {
+    let body = "";
+    request.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+    request.on("end", () => {
+      let parsed = queryString.parse(body);
+      response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      response.write(`Hello ${parsed.name}`);
+      response.end();
+    });
+
+    
+    // collectRequestData(request, (result) => {
+    //   response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    //   response.write(`Hello ${result.name}`);
+    //   response.end();
+    // });
   } else {
     /* ---------------------- */
     /* If no route is matched */

@@ -3,6 +3,11 @@ import { argv } from "node:process";
 import { exec } from "node:child_process"
 import * as readline from "readline";
 
+/**
+ * Wczytuje asynchronicznie wartość cnt z pliku oraz inkrementuje ją o 1.
+ * @author Jakub Warchoł <jakubwarchol@student.agh.edu.pl>
+ */
+
 function async_counter() {
   fs.readFile(
     "/home/jwarchol/ProgramowanieSkryptowe/lab10/src/counter",
@@ -20,6 +25,12 @@ function async_counter() {
     }
   );
 }
+
+/**
+ * Wczytuje synchronicznie wartość cnt z pliku oraz inkrementuje ją o 1.
+ * @author Jakub Warchoł <jakubwarchol@student.agh.edu.pl>
+ */
+
 function sync_counter() {
   let cnt;
   cnt =
@@ -35,6 +46,11 @@ function sync_counter() {
     `${cnt}`
   );
 }
+
+/**
+ * Pozwala obsługiwać linię komend terminala z programu JS.
+ * @author Jakub Warchoł <jakubwarchol@student.agh.edu.pl>
+ */
 
 function sys_cmd(){
     return new Promise(function() {
