@@ -36,8 +36,8 @@ function sync_counter() {
   );
 }
 
-function sys_cmd(cmd){
-    return new Promise(function(resolve, reject) {
+function sys_cmd(){
+    return new Promise(function() {
         let rl = readline.createInterface(process.stdin, process.stdout)
         rl.on('line', function(line) {
             exec(`${line}`, (err, output) => {
