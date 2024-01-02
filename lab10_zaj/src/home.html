@@ -59,46 +59,14 @@
 
     </div>
 
-    <div class="w3-row">
-        <div class="w3-col l1 m1 w3-container">&nbsp;</div>
-        <div id="Laptop-cont" class="w3-container w3-border w3-round-large w3-margin-right w3-section w3-sand w3-col l3 m3">
-            <div class="w3-container">
-                <h2>Laptop</h2>
-                <p id="Laptop">Dostępnych sztuk: </p>
-            </div>
-            <div id="Laptop-button" class="w3-button w3-right w3-black" onclick="sell(Number(document.getElementById('uid').value), 'Laptop', Number(document.getElementById('ilosc').value))">Kup</div>
-            <input id="uid" class="w3-input w3-right w3-border" style="width:15%" type="number" placeholder="ID">
-            <input id="ilosc" class="w3-input w3-right w3-border" style="width: 25%;" type="number" placeholder="Ilość">
-        </div>
-
-        <div id="Komputer-cont" class="w3-container w3-border w3-round-large w3-section w3-sand w3-col l3 m3 w3-margin-right">
-            <div class="w3-container">
-                <h2>Komputer</h2>
-                <p id="Komputer">Dostępnych sztuk: </p>
-            </div>
-            <div id="Komputer-button" class="w3-button w3-right w3-black" onclick="sell(Number(document.getElementById('k_uid').value), 'Komputer', Number(document.getElementById('k_ilosc').value))">Kup</div>
-            <input id="k_uid" class="w3-input w3-right w3-border" style="width:15%" type="number" placeholder="ID">
-            <input id="k_ilosc" class="w3-input w3-right w3-border" style="width: 25%;" type="number" placeholder="Ilość">
-        </div>
-
-        <div id="Telefon-cont" class="w3-container w3-border w3-round-large w3-margin-right w3-section w3-sand w3-col l3 m3">
-            <div class="w3-container">
-                <h2>Telefon</h2>
-                <p id="Telefon">Dostępnych sztuk: </p>
-            </div>
-            <div id="Telefon-button" class="w3-button w3-right w3-black" onclick="sell(Number(document.getElementById('t_uid').value), 'Telefon', Number(document.getElementById('t_ilosc').value))">Kup</div>
-            <input id="t_uid" class="w3-input w3-right w3-border" style="width:15%" type="number" placeholder="ID">
-            <input id="t_ilosc" class="w3-input w3-right w3-border" style="width: 25%;" type="number" placeholder="Ilość">
-        </div>
-    </div>
 
     <div class="w3-row">
         <div class="w3-col l1 m1 w3-container">&nbsp;</div>
-        <form class="w3-container w3-col l3 m3">
+        <form method="GET" action="/submit" class="w3-container w3-col l3 m3">
             <label class="w3-text-teal"><b>Linia komend</b></label>
-            <input id="command" class="w3-input w3-border w3-light-grey" type="text">
+            <input name="command" id="command" class="w3-input w3-border w3-light-grey" type="text">
 
-            <button class="w3-btn w3-blue-grey" onclick="parse(document.getElementById('command').value)">Wykonaj</button>
+            <input value="Wykonaj" type="submit"></input>
         </form>
     </div>
 

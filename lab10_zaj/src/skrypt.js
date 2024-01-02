@@ -1,10 +1,12 @@
-let sklepDB;
+import fs from "fs";
+const PATH = "/home/jwarchol/ProgramowanieSkryptowe/lab10_zaj/";
 
 class Transakcja {
-    constructor(nazwa, ilosc, kwota) {
+    constructor(nazwa, ilosc, kwota, id_klienta) {
         this.nazwa = nazwa;
         this.ilosc = ilosc;
         this.kwota = kwota;
+        this.id_klienta = id_klienta;
     }
 }
 
@@ -24,124 +26,83 @@ class Klient {
     }
 }
 
-class Store {
-    
-}
-
 
 function warehouse() {
-    const tx = sklepDB.transaction('produkty', 'readonly');
-    const produkty = tx.objectStore('produkty');
-    const cursorRequest = produkty.openCursor();
-    console.groupCollapsed("Magazyn")
-    cursorRequest.onsuccess = function (event) {
-        var cursor = event.target.result;
-        if (cursor) {
-            var value = cursor.value;
-            let out = document.getElementById('out')
-            out.innerText = ""
-            out.innerText += (value.nazwa + " - Ilość: " + value.ilosc + "; Cena: " + value.cena + "zł\n");
-            cursor.continue();
-        }
+    let data = fs.readFileSync(PATH + "src/produkty.json", "utf8");
+    const produkty = JSON.parse(data);
+    let out = "Wykonano komendę 'warehouse'\n";
+    for (let produkt of produkty) {
+        out += (produkt.nazwa + " - Ilość: " + produkt.ilosc + "; Cena: " + produkt.cena + "zł\n");
     }
-    console.groupEnd();
+    return out;
 }
 
 function clients() {
-    const tx = sklepDB.transaction('klienci', 'readonly');
-    const produkty = tx.objectStore('klienci');
-    const cursorRequest = produkty.openCursor();
-    console.groupCollapsed("Klienci")
-    let out = document.getElementById('out')
-    out.innerText = ""
-    cursorRequest.onsuccess = function (event) {
-        var cursor = event.target.result;
-        if (cursor) {
-            var value = cursor.value;
-            
-            out.innerText += (value.id + ": " + value.imie + " " + value.nazwisko + "\n");
-            cursor.continue();
-        }
+    let data = fs.readFileSync(PATH + "src/klienci.json", "utf8");
+    const klienci = JSON.parse(data);
+    let out = "Wykonano komendę 'clients'\n";
+    for (let klient of klienci) {
+        out += (klient.id + ": " + klient.imie + " " + klient.nazwisko + "\n");
     }
-    console.groupEnd();
+    return out;
 }
 
 function sell(idKlienta, nazwaProduktu, ilosc) {
-    const tx = sklepDB.transaction(['klienci', 'produkty'], 'readwrite');
-    const klienciStore = tx.objectStore('klienci');
-    const produktyStore = tx.objectStore('produkty');
-    const klientRequest = klienciStore.get(idKlienta);
-    klientRequest.onsuccess = function (event) {
-        if (klientRequest.result === undefined) {
-            window.alert("Nie ma takiego klienta");
-            return;
-        }
-        const klient = klientRequest.result;
-        const produktRequest = produktyStore.get(nazwaProduktu);
-        produktRequest.onsuccess = function (event) {
-            if (produktRequest.result === undefined) {
-                window.alert("Nie ma takiego produktu");
-                return;
-            }
-            const produkt = produktRequest.result;
-            if (produkt.ilosc >= ilosc) {
-                klient.transakcje.push(new Transakcja(nazwaProduktu, ilosc, ilosc * produkt.cena));
-                produkt.ilosc -= ilosc;
-                produktyStore.put(produkt);
-                klienciStore.put(klient);
-                document.getElementById(produkt.nazwa).innerText = `Dostępnych sztuk: ` + produkt.ilosc
-                if (produkt.ilosc === 0){
-                    document.getElementById(produkt.nazwa+'-cont').classList.remove('w3-sand')
-                    document.getElementById(produkt.nazwa+'-cont').classList.add('w3-gray')
-                }
-                console.log(`Sprzedano ${ilosc} sztuk/i ${nazwaProduktu} za ${ilosc * produkt.cena}zł`);
-            }
-            else {
-                window.alert("Nie ma tyle towaru");
-            }
-        }
+    let data = fs.readFileSync(PATH + "src/transakcje.json", "utf8");
+    let transakcje = JSON.parse(data);
+    data = fs.readFileSync(PATH + "src/produkty.json", "utf8");
+    let produkty = JSON.parse(data);
+    data = fs.readFileSync(PATH + "src/klienci.json", "utf8");
+    const klienci = JSON.parse(data);
+
+    let out = "Wykonano komendę 'sell'\n";
+
+    if (klienci.some(e => e.id === idKlienta) == false) { return "Nie ma takiego klienta!"; }
+    if (produkty.some(e => e.nazwa === nazwaProduktu) == false) { return "Nie ma takiego produktu!"; }
+    let prod_ind = produkty.findIndex((e) => e.nazwa === nazwaProduktu);
+    if (produkty[prod_ind].ilosc < ilosc) { return "Nie ma tyle towaru!"; }
+    else {
+        produkty[prod_ind].ilosc -= ilosc;
+        let json = JSON.stringify(produkty);
+        fs.writeFileSync(PATH + "src/produkty.json", json);
+        transakcje.push(new Transakcja(nazwaProduktu, ilosc, ilosc * produkty[prod_ind].cena, idKlienta));
+        json = JSON.stringify(transakcje);
+        fs.writeFileSync(PATH + "src/transakcje.json", json);
+        return out + `Sprzedano ${ilosc} sztuk/i ${nazwaProduktu} za łącznie ${ilosc * produkty[prod_ind].cena}zł klientowi o id ${idKlienta}`;
     }
 }
 
 function show_transactions(idKlienta) {
-    const tx = sklepDB.transaction('klienci', 'readonly');
-    const objectStore = tx.objectStore('klienci');
-    const request = objectStore.get(idKlienta);
-    request.onsuccess = function () {
-        if (request.result === undefined) {
-            window.alert("Nie ma takiego klienta");
-            return;
-        }
-        let suma = 0
-        const transakcje = request.result.transakcje;
-        console.groupCollapsed(`Transakcje klienta ${request.result.imie} ${request.result.nazwisko}`);
-        for (let i = 0; i < transakcje.length; i++) {
-            let out = document.getElementById('out')
-            out.innerText = ""
-            out.innerText += (`${transakcje[i].nazwa} - Ilość: ${transakcje[i].ilosc}; Kwota: ${transakcje[i].kwota}zł\n`);
-            suma += transakcje[i].kwota;
-        }
-        out.innerText += (`Sumaryczna kwota: ${suma}zł`);
-        console.groupEnd();
+    let data = fs.readFileSync(PATH + "src/transakcje.json", "utf8");
+    const transakcje = JSON.parse(data);
+    let out = "Wykonano komendę 'show_transactions'\nTransakcje klienta o id " + idKlienta + ":\n";
+    for (let transakcja of transakcje) {
+        if (transakcja.id_klienta !== idKlienta) continue;
+        out += `${transakcja.nazwa} - Ilość: ${transakcja.ilosc}; Kwota: ${transakcja.kwota}zł\n`;
     }
+    return out;
 }
 
-function parse(json_input) {
+function add_product(nazwa, ilosc, cena) {
+    let data = fs.readFileSync(PATH + "src/produkty.json", "utf8");
+    let produkty = JSON.parse(data);
+    produkty.push(new Produkt(nazwa, ilosc, cena));
+    let json = JSON.stringify(produkty);
+    fs.writeFileSync(PATH + "src/produkty.json", json);
+}
+
+function parse_cmd(json_input) {
     try {
         const input = JSON.parse(json_input);
         switch (input.cmd) {
             case "warehouse":
-                warehouse();
-                break;
+                return warehouse();
             case "show":
-                show_transactions(input.id);
-                break;
+                return show_transactions(input.id);
             case "clients":
-                clients();
-                break;
+                return clients();
             case "sell":
-                sell(input.id, input.nazwa, input.ilosc);
-                break;
+                return sell(input.id, input.nazwa, input.ilosc);
             default:
                 console.error("Nieznana komenda");
         }
@@ -151,4 +112,4 @@ function parse(json_input) {
     }
 }
 
-export { warehouse, clients, sell, show_transactions, parse };
+export { warehouse, clients, sell, show_transactions, parse_cmd, Klient, Produkt, Transakcja, add_product };
