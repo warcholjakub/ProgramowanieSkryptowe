@@ -49,9 +49,9 @@ app.get("/", async function (request, response) {
 });
 
 
-app.post("/", (request, response) => {
+app.post("/", async function (request, response) {
   response.set("Content-Type", "text/plain");
-  response.send(`${parse_cmd(request.body.command)}`);
+  response.send(`${await parse_cmd(request.body.command)}`);
 });
 
 /* ************************************************ */

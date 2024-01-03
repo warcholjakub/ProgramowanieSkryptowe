@@ -1,6 +1,7 @@
 import fs from "fs";
 import { MongoClient } from "mongodb";
 const PATH = "/home/jwarchol/ProgramowanieSkryptowe/lab11_zaj/";
+const client = new MongoClient("mongodb://127.0.0.1:27017");
 
 class Transakcja {
     constructor(nazwa, ilosc, kwota, id_klienta) {
@@ -27,30 +28,29 @@ class Klient {
     }
 }
 
-function getFromDB(collectionName) {
-    const client = new MongoClient("mongodb://127.0.0.1:27017");
-    client.connect();
+async function getFromDB(collectionName) {
+    await client.connect();
     const db = client.db("Sklep_AGH");
     const collection = db.collection(collectionName);
-    const docs = collection.find({}).toArray();
-    client.close();
+    const docs = await collection.find({}).toArray();
+    await client.close();
 
     return docs;
 }
 
-function warehouse() {
-    const produkty = 
+async function warehouse() {
+    const produkty = await getFromDB("produkty");
 
     let out = "Wykonano komendę 'warehouse'\n";
     for (let produkt of produkty) {
-        out += (produkt.nazwa + " - Ilość: " + produkt.ilosc + "; Cena: " + produkt.cena + "zł\n");
+        out += (produkt.nazwa + " - Ilość: " + produkt.ilość + "; Cena: " + produkt.cena + "zł\n");
     }
     return out;
 }
 
-function clients() {
-    let data = fs.readFileSync(PATH + "src/klienci.json", "utf8");
-    const klienci = JSON.parse(data);
+async function clients() {
+    const klienci = await getFromDB("klienci");
+
     let out = "Wykonano komendę 'clients'\n";
     for (let klient of klienci) {
         out += (klient.id + ": " + klient.imie + " " + klient.nazwisko + "\n");
@@ -58,38 +58,35 @@ function clients() {
     return out;
 }
 
-function sell(idKlienta, nazwaProduktu, ilosc) {
-    let data = fs.readFileSync(PATH + "src/transakcje.json", "utf8");
-    let transakcje = JSON.parse(data);
-    data = fs.readFileSync(PATH + "src/produkty.json", "utf8");
-    let produkty = JSON.parse(data);
-    data = fs.readFileSync(PATH + "src/klienci.json", "utf8");
-    const klienci = JSON.parse(data);
+async function sell(idKlienta, nazwaProduktu, ilosc) {
+    let produkty = await getFromDB("produkty");
+    const klienci = await getFromDB("klienci");
+
+    await client.connect();
+    const db = client.db("Sklep_AGH");
 
     let out = "Wykonano komendę 'sell'\n";
 
-    if (klienci.some(e => e.id === idKlienta) == false) { return "Nie ma takiego klienta!"; }
-    if (produkty.some(e => e.nazwa === nazwaProduktu) == false) { return "Nie ma takiego produktu!"; }
+    if (klienci.some(e => e.id === idKlienta) == false) { await client.close(); return "Nie ma takiego klienta!"; }
+    if (produkty.some(e => e.nazwa === nazwaProduktu) == false) { await client.close(); return "Nie ma takiego produktu!"; }
     let prod_ind = produkty.findIndex((e) => e.nazwa === nazwaProduktu);
-    if (produkty[prod_ind].ilosc < ilosc) { return "Nie ma tyle towaru!"; }
+    if (produkty[prod_ind].ilosc < ilosc) { await client.close(); return "Nie ma tyle towaru!"; }
     else {
-        produkty[prod_ind].ilosc -= ilosc;
-        let json = JSON.stringify(produkty);
-        fs.writeFileSync(PATH + "src/produkty.json", json);
-        transakcje.push(new Transakcja(nazwaProduktu, ilosc, ilosc * produkty[prod_ind].cena, idKlienta));
-        json = JSON.stringify(transakcje);
-        fs.writeFileSync(PATH + "src/transakcje.json", json);
-        return out + `Sprzedano ${ilosc} sztuk/i ${nazwaProduktu} za łącznie ${ilosc * produkty[prod_ind].cena}zł klientowi o id ${idKlienta}`;
+        
+        db.produkty.updateOne({ nazwa: nazwaProduktu }, { $set: { ilosc: produkty[prod_ind].ilosc - ilosc } });
+        db.transakcje.insertOne({ nazwa: nazwaProduktu, ilość: ilosc, kwota: ilosc * produkty[prod_ind].cena, id_klienta: idKlienta });
+        await client.close();
     }
+    // return (out + `Sprzedano ${ilosc} sztuk/i ${nazwaProduktu} za łącznie ${ilosc * produkty[prod_ind].cena}zł klientowi o id ${idKlienta}`);
+    return out;
 }
 
-function show_transactions(idKlienta) {
-    let data = fs.readFileSync(PATH + "src/transakcje.json", "utf8");
-    const transakcje = JSON.parse(data);
+async function show_transactions(idKlienta) {
+    const transakcje = await getFromDB("transakcje");
     let out = "Wykonano komendę 'show_transactions'\nTransakcje klienta o id " + idKlienta + ":\n";
     for (let transakcja of transakcje) {
         if (transakcja.id_klienta !== idKlienta) continue;
-        out += `${transakcja.nazwa} - Ilość: ${transakcja.ilosc}; Kwota: ${transakcja.kwota}zł\n`;
+        out += `${transakcja.nazwa} - Ilość: ${transakcja.ilość}; Kwota: ${transakcja.kwota}zł\n`;
     }
     return out;
 }
@@ -102,18 +99,18 @@ function add_product(nazwa, ilosc, cena) {
     fs.writeFileSync(PATH + "src/produkty.json", json);
 }
 
-function parse_cmd(json_input) {
+async function parse_cmd(json_input) {
     try {
         const input = JSON.parse(json_input);
         switch (input.cmd) {
             case "warehouse":
-                return warehouse();
+                return await warehouse();
             case "show":
-                return show_transactions(input.id);
+                return await show_transactions(input.id);
             case "clients":
-                return clients();
+                return await clients();
             case "sell":
-                return sell(input.id, input.nazwa, input.ilosc);
+                return await sell(input.id, input.nazwa, input.ilosc);
             default:
                 console.error("Nieznana komenda");
         }
