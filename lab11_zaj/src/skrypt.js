@@ -91,15 +91,31 @@ async function show_transactions(idKlienta) {
     return out;
 }
 
-function add_product(nazwa, ilosc, cena) {
-    let data = fs.readFileSync(PATH + "src/produkty.json", "utf8");
-    let produkty = JSON.parse(data);
-    produkty.push(new Produkt(nazwa, ilosc, cena));
-    let json = JSON.stringify(produkty);
-    fs.writeFileSync(PATH + "src/produkty.json", json);
+async function add_product(nazwa, ilosc, cena) {
+    await client.connect();
+    const db = client.db("Sklep_AGH");
+    db.produkty.insertOne({ nazwa: nazwa, ilosc: ilosc, cena: cena });
+    return "Dodano produkt do bazy danych";
 }
 
-async function parse_cmd(json_input) {
+async function client_cmd(json_input) {
+    try {
+        const input = JSON.parse(json_input);
+        switch (input.cmd) {
+            case "sell":
+                return await sell(input.id, input.nazwa, input.ilosc);
+            default:
+                console.error("Nieznana komenda");
+                return "Nieznana komenda";
+        }
+    }
+    catch (SyntaxError) {
+        console.error("Błąd parsowania JSON");
+        return "Błąd parsowania JSON";
+    }
+}
+
+async function admin_cmd(json_input) {
     try {
         const input = JSON.parse(json_input);
         switch (input.cmd) {
@@ -111,13 +127,17 @@ async function parse_cmd(json_input) {
                 return await clients();
             case "sell":
                 return await sell(input.id, input.nazwa, input.ilosc);
+            case "add":
+                return await add_product(input.nazwa, input.ilosc, input.cena);
             default:
                 console.error("Nieznana komenda");
+                // return "Nieznana komenda";
         }
     }
     catch (SyntaxError) {
         console.error("Błąd parsowania JSON");
+        return "Błąd parsowania JSON";
     }
 }
 
-export { warehouse, clients, sell, show_transactions, parse_cmd, Klient, Produkt, Transakcja, add_product };
+export { warehouse, clients, sell, show_transactions, client_cmd, admin_cmd, Klient, Produkt, Transakcja, add_product };

@@ -11,7 +11,8 @@ import {
   clients,
   sell,
   show_transactions,
-  parse_cmd,
+  client_cmd,
+  admin_cmd,
   Transakcja,
   Klient,
   Produkt,
@@ -23,6 +24,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+const clientRouter = express.Router();
+const adminRouter = express.Router();
 
 app.locals.pretty = app.get("env") === "development"; 
 
@@ -36,25 +39,28 @@ app.use(express.urlencoded({ extended: false }));
 /* ------------- */
 /* Route 'GET /' */
 /* ------------- */
-app.get("/", async function (request, response) {
-  // const client = new MongoClient("mongodb://127.0.0.1:27017");
-  // await client.connect();
-  // const db = client.db("AGH");
-  // const collection = db.collection("students");
-  // const docs = await collection.find({}).toArray();
-  // console.log(docs);
-  // client.close();
-  response.sendFile(PATH + "views/home.html"); // Render the 'index' view
-  
+clientRouter.get("/", async function (request, response) {
+  response.sendFile(PATH + "views/klient.html");
 });
 
-
-app.post("/", async function (request, response) {
+clientRouter.post("/", async function (request, response) {
   response.set("Content-Type", "text/plain");
-  response.send(`${await parse_cmd(request.body.command)}`);
+  response.send(`${await client_cmd(request.body.command)}`);
+});
+
+adminRouter.get("/", async function (request, response) {
+  response.sendFile(PATH + "views/admin.html");
+});
+
+adminRouter.post("/", async function (request, response) {
+  response.set("Content-Type", "text/plain");
+  response.send(`${await admin_cmd(request.body.command)}`);
 });
 
 /* ************************************************ */
+
+app.use("/", clientRouter);
+app.use("/admin", adminRouter);
 
 app.listen(8000, () => {
   console.log("The server was started on port 8000");
