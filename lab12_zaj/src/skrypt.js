@@ -69,7 +69,6 @@ async function clients() {
 }
 
 async function sell(idKlienta, nazwaProduktu, ilosc) {
-    const client = new MongoClient("mongodb://127.0.0.1:27017");
     const produkty = await getFromDB("produkty");
     const klienci = await getFromDB("klienci");
 
@@ -83,7 +82,6 @@ async function sell(idKlienta, nazwaProduktu, ilosc) {
     let prod_ind = produkty.findIndex((e) => e.nazwa === nazwaProduktu);
     if (produkty[prod_ind].ilosc < ilosc) { await client.close(); return "Nie ma tyle towaru!"; }
     else {
-        
         db.produkty.updateOne({ nazwa: nazwaProduktu }, { $set: { ilosc: produkty[prod_ind].ilosc - ilosc } });
         db.transakcje.insertOne({ nazwa: nazwaProduktu, ilość: ilosc, kwota: ilosc * produkty[prod_ind].cena, id_klienta: idKlienta });
         await client.close();

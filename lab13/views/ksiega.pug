@@ -12,6 +12,7 @@ hr
 h3 Nowy wpis:
 main
   form(method='POST' action='/')
+    input(type='hidden' name='_csrf' value=csrfToken)
     label(for='name') Twoje imie i nazwisko
     br
     input(type='text' name='name')
